@@ -1,14 +1,21 @@
 import { render, screen, within } from '@testing-library/react';
 import UserList from './UserList';
 
-
-test('render one row per user', () => {
+function renderComponent() {
     // Render component
     const users = [
         {name: 'Aca', email: 'aca@aca.com'},
         {name: 'Djole', email: 'djole@djole.com'}
     ];
     render(<UserList users={users}/>);
+
+    return {users};
+}
+
+test('render one row per user', () => {
+
+    // Render component
+    renderComponent();
 
     // Find all the rows in the table
     // To help findinf all particular elements, use the helper func
@@ -41,11 +48,8 @@ test('second approach - render one row per user', () => {
 
 test('render email and name of each user', () => {
     // Render component
-    const users = [
-        {name: 'Aca', email: 'aca@aca.com'},
-        {name: 'Djole', email: 'djole@djole.com'}
-    ];
-    render(<UserList users={users}/>);
+    const {users} = renderComponent();
+    
     for (let user of users) {
         const name = screen.getByRole('cell', {name: user.name});
         const email = screen.getByRole('cell', {name: user.email});
