@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
-import user from '@testing-library/user-event';
 import UserList from './UserList';
+
 
 test('render one row per user', () => {
     // Render component
@@ -36,4 +36,23 @@ test('second approach - render one row per user', () => {
 
     // Asserion: correct number of rows in the table
     expect(rows).toHaveLength(2);
+});
+
+
+test('render email and name of each user', () => {
+    // Render component
+    const users = [
+        {name: 'Aca', email: 'aca@aca.com'},
+        {name: 'Djole', email: 'djole@djole.com'}
+    ];
+    render(<UserList users={users}/>);
+    for (let user of users) {
+        const name = screen.getByRole('cell', {name: user.name});
+        const email = screen.getByRole('cell', {name: user.email});
+
+        expect(name).toBeInTheDocument();
+        expect(email).toBeInTheDocument();
+    }
+
+
 });
