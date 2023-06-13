@@ -18,3 +18,35 @@ test('it shows two inputs and a button', () => {
     expect(inputs).toHaveLength(2);
     expect(button).toBeInTheDocument();
 });
+
+test('it calls onUserAdd when the form is submitted', () => {
+    // NOT THE BEST IMPLEMENTATION
+    const argList = [];
+    const callback = (...args) => {
+        argList.push(args);
+    };
+    // try to render component
+    render(<UserForm onUserAdd={callback}/>);
+
+    // find the two inputs
+    const [nameInput, emailInput] = screen.getAllByRole('textbox');
+
+    // simulate typing name
+    user.click(nameInput);
+    user.keyboard('Aca');
+
+    // simulate typing email
+    user.click(emailInput);
+    user.keyboard('aleksandarilic990@gmail.com');
+
+    // find submit
+    const submit = screen.getByRole('button');
+
+    // simulate clicking on submit
+    user.click(submit)
+
+    // Assert to make sure 'onUserAdd' gets called with name & email
+    expect(argList).toHaveLength(1);
+    expect(argList[0][0]).toEqual({ name: 'Aca', email: 'aleksandarilic990@gmail.com' });
+    
+});
