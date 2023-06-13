@@ -14,8 +14,9 @@ const UserForm = ({ onUserAdd }) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor='name'>Name</label>
-                <input 
+                <label htmlFor='name'>Enter Name</label>
+                <input
+                    id='name'  
                     type='text' 
                     name='name' 
                     value={name} 
@@ -23,8 +24,9 @@ const UserForm = ({ onUserAdd }) => {
                 />
             </div>
             <div>
-                <label htmlFor='email'>Email</label>
-                <input 
+                <label htmlFor='email'>Please Enter Email</label>
+                <input
+                    id='email' 
                     type='email' 
                     name='email' 
                     value={email}
