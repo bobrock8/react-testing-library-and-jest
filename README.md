@@ -6,5 +6,5 @@ Few projects regarding React testing library and Jest
 - `query-notes`: More about `getBy, queryBy, findBy, getAllBy, queryAllBy, findAllBy`
 
 ### How to run rtl-book?
-`npx rtl-book serve roles-notes.js`
+`npx rtl-book serve roles-notes.js`  
 `npx rtl-book serve query-notes.js`
