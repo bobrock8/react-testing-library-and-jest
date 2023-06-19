@@ -2,6 +2,13 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import RepositoriesListItem from './RepositoriesListItem';
 
+// This is the second way to fix 'act' warning regarding FileIcon
+
+jest.mock('../tree/FileIcon', ()=> {
+    return () => {
+        return 'File Icon Component'
+    };
+});
 
 function renderComponent() {
     const repository = {
@@ -23,8 +30,8 @@ function renderComponent() {
 
 test('show a link to the github page for this repository', async ()=>{
     renderComponent();
-
-    await screen.findByRole('img', { name: 'Javascript' });
+    // This is the first way (the best one) to fix 'act' warning regarding FileIcon
+    // await screen.findByRole('img', { name: 'Javascript' });
 });
 
 const pause = () => {
