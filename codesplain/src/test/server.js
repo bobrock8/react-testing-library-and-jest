@@ -1,7 +1,7 @@
 import { setupServer } from "msw/lib/node";
 import { rest } from "msw";
 
-export function creteServer(handlerConfig) {
+export function createServer(handlerConfig) {
     const handlers = handlerConfig.map((config) => {
         return rest[config.method || 'get'](config.path, (req, res, ctx) => {
             return res(

@@ -3,10 +3,10 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 import HomeRoute from './HomeRoute';
-import { creteServer } from '../test/server';
+import { createServer } from '../test/server';
 
 
-creteServer([
+createServer([
     {
         path: '/api/repositories',
         method: 'get',
