@@ -7,14 +7,14 @@ import HomeRoute from './HomeRoute';
 
 const handlers = [
     rest.get('/api/repositories', (req, res, ctx) => {
-        const query = req.url.searchParams.get('q');
-        console.log(query);
+        const language = req.url.searchParams.get('q').split('language:')[1];
+        console.log(language);
 
         return res(
             ctx.json({
                 items:[
-                    { id: 1, full_name: 'full name!!' },
-                    { id: 2, full_name: 'aca name!!' },
+                    { id: 1, full_name: `${language}_one` },
+                    { id: 2, full_name: `${language}_two` },
                 ]
             })
         )
@@ -26,16 +26,50 @@ const handlers = [
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    console.log('beforeAll');
     server.listen();
 });
 
 afterEach(() => {
-    console.log('afterEach');
     server.resetHandlers();
 });
 
 afterAll(() => {
-    console.log('afterAll');
     server.close();
 });
+
+test('renders two links for each language', async () => {
+    render(
+      <MemoryRouter>
+        <HomeRoute />
+      </MemoryRouter>  
+    );
+    
+    // Loop over each language
+    // For each language, make sure we see two links
+    // Assert that the links have the approriate full_name
+    // await pause();
+    // screen.debug();
+
+    const languages = [
+        'javascript',
+        'typescript',
+        'rust',
+        'go',
+        'python',
+        'java'
+    ];
+
+    for (let language of languages) {
+        const links = await screen.findAllByRole('link', {
+            name: new RegExp(`${language}_`)
+        });
+
+        expect(links).toHaveLength(2);
+        expect(links[0]).toHaveTextContent(`${language}_one`);
+        expect(links[1]).toHaveTextContent(`${language}_two`);
+        expect(links[0]).toHaveAttribute('href', `/repositories/${language}_one`);
+        expect(links[1]).toHaveAttribute('href', `/repositories/${language}_two`);
+    }
+});
+
+const pause = () => new Promise(resolve => setTimeout(resolve, 1000));
