@@ -2,31 +2,36 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { createServer } from '../../test/server';
 import AuthButtons from './AuthButtons';
+import { SWRConfig } from 'swr';
 
 
 const renderComponent = async() => {
     render(
-        <MemoryRouter>
-            <AuthButtons />
-        </MemoryRouter>
+        <SWRConfig value={{ provider: () => new Map() }}>
+            <MemoryRouter>
+                <AuthButtons />
+            </MemoryRouter>
+        </SWRConfig>
     );
     return await screen.findAllByRole('link');
 };
 
-// createServer() --> GET '/api/user' --> { user: null }
+
 
 describe('when user is not sign in', () => {
+    // createServer() --> GET '/api/user' --> { user: null }
     createServer([
         {
             path: '/api/user',
             res: () => {
+                console.log('User is not logged');
                 return { user: null };
             }
         }
     ]);
     
     test('sign in and sign up are visible', async() => {
-        
+    
         await renderComponent();
         const signInButton = screen.getByRole('link', {
             name: /sign in/i
@@ -59,17 +64,40 @@ describe('when user is sign in', () => {
         {
             path: '/api/user',
             res: () => {
-                return { user: 3, email: 'aca@react.com' };
+                console.log('User is logged');
+                return { user: { id: 3, email: 'aca@react.com' }};
             }
         }
     ]);
 
     test('sign in and sign up are not visible', async() => {
+        
         await renderComponent();
+
+        const signInButton = screen.queryByRole('link', {
+            name: /sign in/i
+        });
+        const signUpButton = screen.queryByRole('link', {
+            name: /sign up/i
+        });
+
+        expect(signInButton).not.toBeInTheDocument();
+        expect(signInButton).toBeNull();
+
+        expect(signUpButton).not.toBeInTheDocument();
+        expect(signUpButton).toBeNull();
     });
 
     test('sign out is visible', async() => {
         await renderComponent();
+
+        const signOutButton = screen.getByRole('link', {
+            name: /sign out/i
+        });
+
+        expect(signOutButton).toBeInTheDocument();
+        expect(signOutButton).toHaveAttribute('href', '/signout');
+
     });
 });
 
