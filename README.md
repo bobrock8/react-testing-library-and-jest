@@ -33,6 +33,11 @@ Check `src/test/server.js` file and `createServer` implementation in some other 
 
 More about debugging [here](https://create-react-app.dev/docs/debugging-tests/).
 
+### The tests I wrote during the course:
+- `AuthButtons.test.js`
+- `HomeRoute.test.js`
+- `RepositoriesListItem.test.js`
+- `RepositoriesSummary.test.js`
 
 ### Summary
 During the [course](https://www.udemy.com/course/react-testing-library-and-jest/), I learned a lot about writing React tests.
